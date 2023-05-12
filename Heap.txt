@@ -1,0 +1,73 @@
+package ADS_Prac;
+
+import java.util.*;
+public class heap {
+    static class MaxHeap{
+        ArrayList<Integer> maxarr= new ArrayList<>();
+        public void addmaxheap(int value){
+            maxarr.add(value);
+            int child=(maxarr.size()-1);
+            int parent=(child-1)/2;
+
+            while(maxarr.get(child)>maxarr.get(parent)){
+                swap(child,parent);
+                child=parent;
+                parent=(child-1)/2;
+            }
+        }
+        public void swap(int index1, int index2){
+            int temp = maxarr.get(index1);
+            maxarr.set(index1, maxarr.get(index2));
+            maxarr.set(index2,temp);
+        }
+
+        public int peek(){
+            return maxarr.get(0);
+        }
+
+    }
+
+    static class MinHeap{
+        ArrayList<Integer> minarr= new ArrayList<>();
+        public void addminheap(int value){
+            minarr.add(value);
+            int child=(minarr.size()-1);
+            int parent=(child-1)/2;
+
+            while(minarr.get(child)<minarr.get(parent)){
+                swap(child,parent);
+                child=parent;
+                parent=(child-1)/2;
+            }
+        }
+        public int peek(){
+            return minarr.get(0);
+        }
+
+        public void swap(int index1, int index2){
+            int temp = minarr.get(index1);
+            minarr.set(index1, minarr.get(index2));
+            minarr.set(index2,temp);
+        }
+
+    }
+
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        MaxHeap h = new MaxHeap();
+        MinHeap I = new MinHeap();
+
+        System.out.println("ENTER THE NUMBER OF STUDENTS:");
+        int STU_NO= scan.nextInt();
+
+        for(int i=1;i<=STU_NO;i++){
+            System.out.println("STUDENT "+i+" MARKS:");
+            int STU_MARKS= scan.nextInt();
+            h.addmaxheap(STU_MARKS);
+            I.addminheap(STU_MARKS);
+        }
+        System.out.println("Maximum MARKS: "+ h.peek());
+        System.out.println("Minimum MARKS: "+ I.peek());
+
+    }
+}

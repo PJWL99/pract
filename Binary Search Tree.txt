@@ -1,0 +1,105 @@
+package ADS;
+
+public class treee {
+	static class node{
+		int data;
+		node right;
+		node left;
+	};
+	static node rootnode = null;
+	void insert(int data, node root) {
+		node nn = new node();
+		nn.data = data;
+		nn.right=null;
+		nn.left=null;
+		
+		
+		if(root==null) {
+			rootnode = nn;
+		}
+		else {
+			if(nn.data>root.data) {
+				if(root.right==null) {
+					root.right = nn;
+				}
+				else {
+					insert(data, root.right);
+				}
+			}
+			else if(nn.data<root.data) {
+				if(root.left==null) {
+					root.left = nn;
+				}
+				else {
+					insert(data, root.left);
+				}
+			}
+		}
+	}
+	
+	
+	
+	void inorder(node root) {
+		if(root!=null) {
+			inorder(root.left);
+			System.out.println(root.data);
+			inorder(root.right);
+		}
+	}
+	
+	
+	
+	node delete(int data, node root) {
+		if(data<root.data) {
+			root.left=delete(data, root.left);
+		}
+		
+		else if(data>root.data) {
+			root.right=delete(data, root.right);
+		}
+		
+		else {
+			if(root.left==null && root.right==null) {
+				return null;
+			}
+			
+			else if(root.left == null) {
+				return root.right;
+			}
+			else if(root.right == null) {
+				return root.left;
+			}
+			else {
+				node temp;
+				temp=root.right;
+				while(temp.left!=null) {
+					temp=temp.left;
+				}
+				root.data=temp.data;
+				delete(data, root.right);
+			}
+		}
+		return root;
+	}
+	
+	
+	
+	public static void main(String args[]) {
+		treee t = new treee();
+		t.insert(2, rootnode);
+		t.insert(1, rootnode);
+		t.insert(4, rootnode);
+		t.insert(5, rootnode);
+		t.insert(9, rootnode);
+		t.insert(7, rootnode);
+		t.insert(3, rootnode);
+		t.insert(14, rootnode);
+		t.insert(8, rootnode);
+		t.insert(6, rootnode);
+		t.inorder(rootnode);
+		t.delete(3, rootnode);
+		System.out.println("After delete:");
+		t.inorder(rootnode);
+		
+	}
+}

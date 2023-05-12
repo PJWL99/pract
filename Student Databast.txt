@@ -1,0 +1,80 @@
+package ADS_Prac;
+import java.util.*;
+import java.io.*;
+
+public class Database {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int choice;
+		int n = 1;
+		do {
+			choice = 0;
+			System.out.println("\nSelect the Operation that you want to perform:");
+			System.out.println("1. Add new student.");
+			System.out.println("2. Read Student database.");
+			System.out.println("3. Delete Database.");
+			System.out.println("[Enter any other digit to exit.]");
+			choice = scan.nextInt();
+			scan.nextLine();
+			switch(choice) {
+			case 1:
+				System.out.println("Enter Student details:");
+				try {
+					System.out.print("Enter Student Name: "); 
+					String Name = scan.nextLine();
+					System.out.print("Enter Student Roll Number: "); 
+			         String RollNo = scan.nextLine();
+			         System.out.print("Enter Student PRN: "); 
+			         String PRN = scan.nextLine();
+			         File f1 = new File("C:/users/Prajwal Mahajan/Prajwal/java/StudentDatabase.txt");
+			         if(!f1.exists()) {
+			            f1.createNewFile();
+			         }
+
+			         FileWriter fileWritter = new FileWriter(f1.getName(),true);
+			         BufferedWriter bw = new BufferedWriter(fileWritter);
+			         bw.write("Student " + n + ":\n");
+			         bw.write("Name: " + Name + "\n");
+			         bw.write("Roll Number: " + RollNo + "\n");
+			         bw.write("PRN: " + PRN + "\n\n");
+			         bw.close();
+			         System.out.println("Done");
+			      } catch(IOException e){
+			        System.out.println("Error"); 
+			        //e.printStackTrace();
+			      }
+				n++;
+				break;
+			case 2:
+				try {
+				      File f1 = new File("StudentDatabase.txt");
+				      Scanner myReader = new Scanner(f1);
+				      while (myReader.hasNextLine()) {
+				        String data = myReader.nextLine();
+				        System.out.println(data);
+				      }
+				      myReader.close();
+				    } catch (FileNotFoundException e) {
+				      System.out.println("An error occurred.");
+				      //e.printStackTrace();
+				    }
+				break;
+			case 3:
+				File f1 = new File("StudentDatabase.txt"); 
+			    if (f1.delete()) { 
+			      System.out.println("Deleted the file: " + f1.getName());
+			      n=1;
+			    } else {
+			      System.out.println("Failed to delete the file.");
+			    }
+				break;
+			default:
+				break;
+			}
+		}while(choice < 4);
+		System.out.println("Program finished.");
+		scan.close();
+	}
+
+}

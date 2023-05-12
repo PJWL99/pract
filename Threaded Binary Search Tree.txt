@@ -1,0 +1,139 @@
+package assignments;
+import java.util.*;
+
+public class ThreadedBST {
+	
+	class Node{
+		Node leftNode, rightNode;
+		int data;
+		boolean leftThread, rightThread;
+		Node(int data) {
+			this.data = data;
+			this.leftNode = null;
+			this.rightNode = null;
+			this.leftThread = true;
+			this.rightThread = true;
+		}
+	}
+	
+	Node rootNode;
+	
+	ThreadedBST() {
+		rootNode = null;
+	}
+	
+	void insert(int data){
+		Node newNode = new Node(data);
+		
+		if(rootNode == null) {
+			rootNode = newNode;
+			return;
+		}
+		
+		else {
+			Node pointer = rootNode;
+			Node parent = null;
+			
+			while(pointer != null){
+				
+				if(data == pointer.data){
+					System.out.println("Duplicate key !");
+					return;
+				}
+				
+				parent = pointer;
+				
+				if(data < pointer.data){
+					if(pointer.leftThread == false)
+						pointer = pointer.leftNode;
+					else
+						break;
+				}
+				else{
+					if(pointer.rightThread == false)
+						pointer = pointer.rightNode;
+					else
+						break;
+				}
+			}
+			
+			
+			if(data < parent.data){
+				newNode.leftNode = parent.leftNode;
+				newNode.rightNode = parent;
+				parent.leftThread = false;
+				parent.leftNode = newNode;
+			}
+			else{
+				newNode.leftNode = parent;
+				newNode.rightNode = parent.rightNode;
+				parent.rightThread = false;
+				parent.rightNode = newNode;
+			}
+
+		}		
+	}
+	
+	Node inorderSuccessor(Node pointer){
+		
+		if(pointer.rightThread == true)
+			return pointer.rightNode;
+		
+		pointer = pointer.rightNode;
+		
+		while(pointer.leftThread == false){
+			pointer = pointer.leftNode;
+		}
+		
+		return pointer;
+	}
+	
+	void inorder(Node rootNode){
+		
+		if(rootNode == null)
+			System.out.println("Tree is empty !");
+		
+		Node pointer = rootNode;
+		
+		while(pointer.leftThread == false){
+			pointer = pointer.leftNode;
+		}
+		
+		while(pointer != null){
+			System.out.print(pointer.data + "\t");
+			pointer = inorderSuccessor(pointer);
+		}
+	}
+
+	
+	public static void main(String[] args) {
+		ThreadedBST tree = new ThreadedBST();
+		
+		Scanner scan = new Scanner(System.in);
+		int choice = 0;
+		do {
+			choice = 0;
+			System.out.println("\n\nSelect the Operation that you want to perform:");
+			System.out.println("1. Insert node in Threaded BST.");
+			System.out.println("2. Print inorder traversal of Threaded BST.");
+			System.out.println("[Enter any other digit to exit.]");
+			choice = scan.nextInt();
+			switch(choice) {
+			case 1:
+				System.out.println("\nEnter data to be inserted:");
+				int inputData = scan.nextInt();
+				tree.insert(inputData);
+				System.out.println("\nData inserted.");
+				break;
+			case 2:
+				System.out.println("\nInorder traversal of Threaded BST:");
+				tree.inorder(tree.rootNode);
+				break;
+			default:
+				break;
+			}
+		}while(choice < 3);
+		System.out.println("Program finished.");
+		scan.close();
+	}
+}

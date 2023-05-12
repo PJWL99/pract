@@ -1,0 +1,63 @@
+package ADS_Prac;
+
+import java.util.*;
+
+public class Djk {
+	public static final int V = 6;
+	
+	public static int dijkstraAlgorithm(int[][] graph, int source, int destination) {
+
+        int[] distance = new int[V];
+        boolean[] visited = new boolean[V];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[source] = 0;
+
+        for (int i = 0; i < V - 1; i++) {
+            int minVertex = getMinVertex(distance, visited);
+            visited[minVertex] = true;
+            
+            for (int j = 0; j < V; j++) {
+                int edgeWeight = graph[minVertex][j];
+                if (edgeWeight > 0 && !visited[j] && distance[minVertex] != Integer.MAX_VALUE
+                        && distance[minVertex] + edgeWeight < distance[j]) {
+                    distance[j] = distance[minVertex] + edgeWeight;
+                }
+            }
+        }
+
+        return distance[destination];
+    }
+	
+	public static int getMinVertex(int[] distance, boolean[] visited) {
+        int minDistance = Integer.MAX_VALUE;
+        int minVertex = -1;
+        for (int i = 0; i < distance.length; i++) {
+            if (!visited[i] && distance[i] < minDistance) {
+                minDistance = distance[i];
+                minVertex = i;
+            }
+        }
+        return minVertex;
+    }
+            
+	
+	public static void main(String args[]) {
+		
+		int graph[][] = new int[][] { { 0, 7, 8, 0, 0, 0 },
+            						  { 7, 0, 3, 6, 0, 0 },
+            						  { 8, 3, 0, 4, 3, 0 },
+            						  { 0, 6, 4, 0, 2, 5 },
+            						  { 0, 0, 3, 2, 0, 2 },
+            						  { 0, 0, 0, 5, 2, 0 }};
+		
+		
+		// Calculating the shortest distance between vertex (0) and (5).
+		
+		int source = 1;
+		int destination = 4;
+		int distance = dijkstraAlgorithm(graph, source, destination);
+		
+		System.out.println("The shortest distance between vertex "+source+" and vertex " + destination+" is: " + distance);
+		
+	}
+}
