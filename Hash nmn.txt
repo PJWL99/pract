@@ -1,0 +1,66 @@
+package ADS_Prac;
+
+public class Hashing {
+	int [] table;
+	int capacity;
+	int size;
+	
+	Hashing(int capacity){
+		this.capacity = capacity;
+		table = new int[capacity];
+		this.size = 0;
+	}
+	public int hashfunc(int data) {
+		return data % capacity;
+	}
+	public void insert(int data) {
+		int index = hashfunc(data);
+		
+		while(table[index] != 0) {
+			index = (index +1) % capacity;
+		}
+		table[index] = data;
+		size++;
+	}
+	public boolean search(int data) {
+		int index = hashfunc(data);
+		
+		while(table[index] != 0) {
+			if(table[index] == data) {
+				return true;
+			}
+			index = (index +1) % capacity;
+		}
+		return false;
+	}
+	public void delete(int data) {
+		int index = hashfunc(data);
+		
+		while(table[index] != 0) {
+			if(table[index] == data) {
+				table[index] = -1;
+				size--;
+				return;
+			}
+			index = (index+1) % capacity;
+			
+		}
+	}
+	public void printhash() {
+		for(int i = 0; i < capacity; i++) {
+			if(table[i] != 0 && table[i] != -1) {
+			System.out.println("Index "+i+": "+table[i]);
+			}
+		}
+	}
+	public static void main(String args[]) {
+		Hashing hash = new Hashing(5);
+		hash.insert(5);
+		hash.insert(6);
+		hash.insert(8);
+		hash.insert(1);
+		hash.insert(10);
+		hash.delete(6);		
+		hash.printhash();
+	}
+}
